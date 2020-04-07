@@ -3,6 +3,7 @@ const client = require('prom-client');
 const { WebSocketClient } = require('./websocket');
 const ENDPOINT = process.env.ENDPOINT
 
+//将监控目标数组化
 var arr = ENDPOINT.toString().split(",");
 
 const gauge = new client.Gauge({
@@ -11,6 +12,7 @@ const gauge = new client.Gauge({
   labelNames: ['url', 'status']
 });
 
+//循环探测ws的可用性
 for (let index in arr) {
   const ws = new WebSocketClient();
   ws.open(arr[index]);
