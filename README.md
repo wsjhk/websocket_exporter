@@ -21,3 +21,21 @@ websocket{url="ws://www.bcd.com",status="error"} 0
 websocket{url="ws://www.abc.com",status="ok"} 1
 websocket{url="wss://www.abc.com",status="ok"} 1
 ```
+
+> 配置prometheus监控：
+```
+# vim /etc/prometheus/prometheus.yml //添加以下配置
+- job_name: websocket
+  scrape_interval: 10s
+  scrape_timeout: 10s
+  static_configs:
+  - targets:
+    - "localhost:9189"
+    labels:
+      target: wss
+```
+> 配置完成后reload：
+```
+# curl -X POST http://localhost:9090/-/reload
+```
+
