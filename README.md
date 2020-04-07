@@ -12,7 +12,7 @@ Environment variable ENDPOIINT must be passed to the container.
 
 > demo:
 ```
-curl 94.191.109.129:9189/metrics
+curl localhost:9189/metrics
 # HELP websocket websocket_help
 # TYPE websocket gauge
 websocket{url="ws://www.bcd.com",status="error"} 0
