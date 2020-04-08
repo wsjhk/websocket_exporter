@@ -9,7 +9,7 @@ var arr = ENDPOINT.toString().split(",");
 const gauge = new client.Gauge({
   name: 'websocket',
   help: 'websocket_help',
-  labelNames: ['url', 'status']
+  labelNames: ['url']
 });
 
 //循环探测ws的可用性
@@ -17,10 +17,10 @@ for (let index in arr) {
   const ws = new WebSocketClient();
   ws.open(arr[index]);
   ws.onopen = function (e) {
-    gauge.labels(arr[index], 'ok').set(1);
+    gauge.labels(arr[index]).set(1);
   }
   ws.onerror = function (e) {
-    gauge.labels(arr[index], 'error').set(0);
+    gauge.labels(arr[index]).set(0);
   }
 }
 server.get('/metrics', (req, res) => {
