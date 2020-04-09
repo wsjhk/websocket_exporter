@@ -17,9 +17,9 @@ Environment variable ENDPOIINT must be passed to the container.
 # curl localhost:9189/metrics
 # HELP websocket websocket_help
 # TYPE websocket gauge
-websocket{url="ws://www.bcd.com",status="error"} 0
-websocket{url="ws://www.abc.com",status="ok"} 1
-websocket{url="wss://www.abc.com",status="ok"} 1
+websocket{url="ws://www.bcd.com"} 0
+websocket{url="ws://www.abc.com"} 1
+websocket{url="wss://www.abc.com"} 1
 ```
 
 > 配置prometheus监控：
@@ -38,4 +38,18 @@ websocket{url="wss://www.abc.com",status="ok"} 1
 ```
 # curl -X POST http://localhost:9090/-/reload
 ```
-
+> 配置告警规则：
+```
+# cat /etc/prometheus/rules/websocket.rules
+groups:
+- name: websocket 监控
+rules:
+- alert: websocket 接口探测到异常
+expr: websocket{job="websocket"} < 1
+for: 30s
+labels:
+severity: 2
+annotations:
+summary: "接口{{ $labels.url }} 探测异常"
+description: "websocket地址:{{ $labels.url }} , 状态为: down ."
+```
